@@ -28,3 +28,4 @@ Zero-Shot-CoT 不添加示例而仅仅在指令中添加一行经典的“Let's 
 多次调用大模型（奇次），然后使用大模型进行投票
 
 ## ToT(Tree of thought)
+
