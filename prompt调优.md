@@ -30,3 +30,4 @@ Zero-Shot-CoT 不添加示例而仅仅在指令中添加一行经典的“Let's 
 ## ToT(Tree of thought)
 
 多条CoT组合在一起
+![](assets/prompt调优/file-20260211161055845.png)
