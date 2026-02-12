@@ -7,3 +7,9 @@ LangChain是一个用于开发由LLMs驱动的应用程序的框架。
 1. 提示词模板
 2. 语言模型
 3. 输出解析
+
+## 提示词模板
+
+1. PromptTemplate
+2. ChatPromptTemplate
+3. FewShotPromptTemplate
