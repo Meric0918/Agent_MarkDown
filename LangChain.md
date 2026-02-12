@@ -157,3 +157,52 @@ LangChain Expression language，用一种用声明式的方法来链接LangChain
 
 - RunnableLambda()可以将自定义函数变成链中的一个组件，或者可以使用@chain在函数上标记注解
 - RunnableParrallel / RunnableMap()
+```python
+def add_one(x: int) -> int:
+
+    return x + 1
+
+  
+
+def mul_two(x: int) -> int:
+
+    return x * 2
+
+  
+
+def mul_three(x: int) -> int:
+
+    return x * 3
+
+  
+
+#组件化
+
+runnable_1 = RunnableLambda(add_one)
+
+runnable_2 = RunnableLambda(mul_two)
+
+runnable_3 = RunnableLambda(mul_three)
+
+  
+
+#串行
+
+chain_seq = runnable_1 | runnable_2 | runnable_3
+
+print(chain_seq.invoke(1))
+
+  
+
+#并行
+
+chain2 = runnable_1 | RunnableParallel(
+
+    mul_two=runnable_2,
+
+    mul_three=runnable_3) |  runnable_3
+
+  
+
+print(chain2.invoke(1))
+```
