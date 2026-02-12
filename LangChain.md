@@ -207,3 +207,32 @@ chain2 = runnable_1 | RunnableParallel(
 print(chain2.invoke(1))
 # 输出为字典 {'mul_two': 4, 'mul_three': 6}
 ```
+- RunnablePassthrough
+```python
+# RunnablePassthrough原样进行数据传递
+
+runnable = RunnableParallel(
+
+    passed=RunnablePassthrough(),
+
+    modified=lambda x: x["num"] + 1,
+
+)
+
+print(runnable.invoke({"num": 1}))  
+# {'passed': {'num': 1}, 'modified': 2}
+
+
+# RunnablePassthrough对数据增强后传递
+
+runnable = RunnableParallel(
+
+    passed=RunnablePassthrough().assign(query=lambda x: x["num"] + 2),
+
+    modified=lambda x: x["num"] + 1,
+
+)
+
+print(runnable.invoke({"num": 1})) 
+# {'passed': {'num': 1, 'query': 3}, 'modified': 2}
+```
