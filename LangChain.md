@@ -154,3 +154,6 @@ if __name__ == "__main__":
 ## LCEL
 
 LangChain Expression language，用一种用声明式的方法来链接LangChain组件
+
+- RunnableLambda()可以将自定义函数变成链中的一个组件，或者可以使用@chain在函数上标记注解
+- RunnableParrallel / RunnableMap()
