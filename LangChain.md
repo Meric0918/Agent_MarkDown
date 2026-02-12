@@ -15,7 +15,17 @@ LangChain是一个用于开发由LLMs驱动的应用程序的框架。
 template_str = "您是一位专业的程序员。\n对于信息 {text} 进行简短描述"
 fact_text = "langchain"
 
+# 第一种形式
 prompt = PromptTemplate.from_template(template_str)
+
+#第二种形式，有明显的约束，要求使用该模版时，必给变量 {text} 赋值
+prompt2 =PromptTemplate(
+
+    input_variables=["text"],
+
+    template=template_str
+
+)
 print(prompt.format(text=fact_text))
 ```
 - ChatPromptTemplate
@@ -65,3 +75,14 @@ print(parser.invoke(result))
 - DateOutputParser
 - JsonOutputParser
 - XMLOutputParser
+
+## Chain
+
+```python
+# prompt -> client -> parser
+chain = chat_template | client | parser
+
+# 传参需要是字典，key要和模版中的变量名一致
+
+print(chain.invoke({"language":"法语", "text":"你好，今天的天真蓝"}))
+```
