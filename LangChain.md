@@ -200,7 +200,7 @@ chain2 = runnable_1 | RunnableParallel(
 
     mul_two=runnable_2,
 
-    mul_three=runnable_3) |  runnable_3
+    mul_three=runnable_3)
 
   
 
