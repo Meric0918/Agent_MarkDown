@@ -86,3 +86,11 @@ chain = chat_template | client | parser
 
 print(chain.invoke({"language":"法语", "text":"你好，今天的天真蓝"}))
 ```
+
+**注意**：开启LangChain应用程序的调试功能
+
+```python
+#开启调试模型
+
+langchain.debug = True
+```
