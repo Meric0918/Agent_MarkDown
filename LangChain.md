@@ -205,4 +205,5 @@ chain2 = runnable_1 | RunnableParallel(
   
 
 print(chain2.invoke(1))
+# 输出为字典 {'mul_two': 4, 'mul_three': 6}
 ```
