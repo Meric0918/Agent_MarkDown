@@ -151,3 +151,6 @@ if __name__ == "__main__":
 
 }'''
 ```
+## LCEL
+
+LangChain Expression language，用一种用声明式的方法来链接LangChain组件
