@@ -439,3 +439,11 @@ resp = chatbot_with_his.invoke(
 
 print(resp)
 ```
+
+## 查看流程
+
+chain.get_graaph().print_ascii()
+
+## 流式输出
+
+invoke换成stream
