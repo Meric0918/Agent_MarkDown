@@ -447,3 +447,9 @@ chain.get_graaph().print_ascii()
 ## 流式输出
 
 invoke换成stream
+
+## 文档切割器
+
+- CharacterTextSplitter，基于字符(默认为"\n\n")进行切割
+- RecursiveCharacterTextSplitter，支持对特定的编程语言(‘JavaScript’、‘cpp’、‘go’、‘java’ 、‘php’、‘python’等等)的代码进行切割
+- MarkdownHeaderTextSplitter，可以根据指定的一组标题来切割一个Markdown 文档。
