@@ -23,8 +23,7 @@ SFT（Supervised Fine-Tuning，监督微调）的核心动作很简单：给模�
 这套完整的对话结构覆盖了整个调用链路。模型通过反向传播（backpropagation）来学习：给定样本里的正确 JSON 调用，当模型输出的内容偏离这个正确答案时，损失函数就会产生惩罚信号，梯度往回传，一点点调整模型内部的参数权重，让下次输出更接近正确格式。
 
 大量样本反复训练，模型就把这套「看到工具定义 + 看到用户问题 -> 输出规范 JSON」的模式「记住」了。就像背单词，看一遍不够，反复遇到、反复纠错，最终形成了肌肉记忆。
-
-![image-20260506154346534](D:\Project\Agent_MarkDown\面经\assets\Tool_Call\image-20260506154346534.png)
+![](assets/Tool_Call/file-20260512191530958.png)
 
 
 
@@ -47,5 +46,34 @@ SFT（Supervised Fine-Tuning，监督微调）的核心动作很简单：给模�
 SFT 解决的是「会不会」的问题，RLHF 解决的是「该不该」的问题。
 
 # 2.MCP
+![](assets/Tool_Call/file-20260512191621372.png)
 
-![image-20260506162158851](D:\Project\Agent_MarkDown\面经\assets\Tool_Call\image-20260506162158851.png)
+第一类是 **Tools**（工具），这是最核心、使用最频繁的能力，对应的是有副作用的操作，执行之后会改变外部世界的状态。创建文件、提交代码、发送 Slack 消息、调用第三方 API，都属于 Tools。由模型主动触发，执行有不可逆性，所以通常需要用户授权确认。Tools 对应 Function Calling 里「函数」的概念，只是在 MCP 框架下被标准化打包了。
+
+第二类是 **Resources**（资源），这是只读数据，没有任何副作用，只是把数据提供给模型看。读取日志文件、查询数据库记录、获取文档内容，都是 Resources。和 Tools 最本质的区别是什么呢？Resources 不会改变任何东西，可以更宽松地暴露，不需要像 Tools 那样谨慎授权。你可以把Resources 理解成「工具的资料室」，可以进去查资料，但不能修改里面的东西。
+
+第三类是 **Prompts**（提示模板），这是预定义的提示词模板，带参数占位符。它解决的是「每次都要手写重复 prompt」的问题。比如把团队固定的代码审查标准封装成模板，接受「编程语言」和「代码内容」两个参数，调用时只需传参，自动展开成完整提示词，不用每次从头写。这个能力特别适合团队内部的最佳实践共享，把积累的优质 prompt 模板化，所有人统一复用，标准也更一致。
+三者的本质区别可以这样记：Tools 改变世界，Resources 观察世界，Prompts 结构化表达。
+
+
+## JSON-RPC
+
+第一种是 stdio（标准输入输出），Server 作为本地子进程运行，Client 通过管道和它通信，Server 从 stdin 读消息，把结果写到 stdout。这种方式适合本地工具，不需要网络，启动快、延迟低，Claude Desktop 接本地 MCP Server 用的就是这种方式。
+
+第二种是 Streamable HTTP，Server 作为 HTTP 服务部署在远程，Client 通过 HTTP 连接和它通信。这种方式适合远程部署的工具服务，或者需要多个 Client 共享同一个 Server 的场景，比如团队共用一个部署在服务器上的数据库 MCP Server，所有人的 AI 客户端都连同一个地址就行。
+
+![697](assets/Tool_Call/file-20260512191735101.png)
+
+## skills
+
+![](assets/Tool_Call/file-20260512192135400.png)
+
+## Function Calling、MCP、Skill区别
+
+Function Calling 是最底层的调用协议，解决的是「模型怎么调函数」，模型输出结构化 JSON 告诉程序该调哪个函数、传什么参数。
+
+MCP 在 Function Calling 之上做工具标准化，解决的是「工具怎么暴露给模型」，把数据库、API 这些外部能力封装成标准化服务，一次实现到处复用。
+
+Agent Skill 在最上层做知识和流程的封装，解决的是「拿到工具之后按什么流程完成任务」，把执行步骤、标准、脚本、模板打包成可复用模块。
+
+简单记就是：Function Calling 是语言，MCP 是工具箱，Skill 是操作手册。
